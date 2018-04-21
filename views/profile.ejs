@@ -1,73 +1,99 @@
 <!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+  <title>Node Authentication</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/css/tempusdominus-bootstrap-4.min.css" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/js/tempusdominus-bootstrap-4.min.js" crossorigin="anonymous"></script>
+  <style>
+  body        { padding-top:80px; word-wrap:break-word; }
+  </style>
+</head>
 
-
-    <title>Node Authentication</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <style>
-        body        { padding-top:80px; word-wrap:break-word; }
-    </style>
-
-<div class="container">
+<body>
+  <div class="container">
 
     <!-- Header -->
     <div class="border-bottom text-center">
-        <h1><span class="fa fa-rocket"></span> Fuel Tracker</h1>
-        <h5><span class="fa fa-user"></span> <%= user.local.email %></h5>
-        <a href="/logout" class="btn btn-outline-dark">Logout</a>
+      <h1><span class="fa fa-rocket"></span> Fuel Tracker</h1>
+      <h5><span class="fa fa-user"></span> <%= user.local.email %></h5>
+      <a href="/logout" class="btn btn-outline-dark">Logout</a>
     </div>
-<br>
+    <br>
     <!-- Form  -->
     <div class="form-row text-center card card-body">
+      <form action="/kmdata" method="post">
         <br>
         <div class="row">
-            <div class="col">
-                <input id="Kmetros" class="form-control" placeholder="Kilometraje">
-                <br>
-                <input id="litros" class="form-control" placeholder="Litros">
-            </div>
+          <div class="col">
+            <input id="Kmetros" class="form-control" placeholder="Kilometraje">
+            <br>
+            <input id="litros" class="form-control" placeholder="Litros">
+          </div>
 
-            <div class="col">
-                <input id="precio" class="form-control" placeholder="Costo Total">
-                <br>
-                <input id="precioxlitro" class="form-control" placeholder="Precio por Litro">
-                <br>
-                <input id="fecha" class="form-control" placeholder="Fecha">
-                <br>
+          <div class="col">
+            <input id="precio" class="form-control" placeholder="Costo Total">
+            <br>
+            <input id="precioxlitro" class="form-control" placeholder="Precio por Litro">
+            <br>
+            <div class="form-group">
+              <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                <input id="fecha" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                  <div class="input-group-text"><i class="fa fa-calendar"></i>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          <script type="text/javascript">
+          $(function () {
+            $('#datetimepicker1').datetimepicker();
+          });
+          </script>
+          <br>
+
         </div>
         <button id="enviar" class="btn btn-success">Enviar!</button>
+        </form>
+      </div>
     </div>
+    <!-- END Form  -->
     <br>
 
     <div class="row">
 
-        <!-- LOCAL County -->
-        <div class="col">
-            <div class="card card-body bg-light">
-                <h3><span class="fa fa-bus"></span> County</h3>
+      <!-- LOCAL County -->
+      <div class="col">
+        <div class="card card-body bg-light">
+          <h3><span class="fa fa-bus"></span> County</h3>
 
-                    <p>
-                        DATA
-                    </p>
+          <p>
+            DATA
+          </p>
 
-            </div>
         </div>
+      </div>
 
-        <!-- LOCAL H1 -->
-        <div class="col">
-            <div class="card card-body bg-light">
-                <h3><span class="fa fa-bus"></span> User H1</h3>
+      <!-- LOCAL H1 -->
+      <div class="col">
+        <div class="card card-body bg-light">
+          <h3><span class="fa fa-bus"></span> User H1</h3>
 
-                    <p>
-                        DATA
-                    </p>
+          <p>
+            DATA
+          </p>
 
-            </div>
         </div>
+      </div>
     </div>
 
-</div>
+  </div>
+</body>
+</html>
