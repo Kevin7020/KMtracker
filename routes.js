@@ -67,7 +67,7 @@ var Kmdata            = require('./models/kmdata.js');
     });
 
     /*
-    *var kmdata = [ //OLD array to store messages
+    *var kmdata = [ //OLD DEV array to store messages
     *  { Kmetros: "1", litros: "2", precioT: "3", precioL: "4", fecha: "04/27/2018 10:43 PM" }
     *]
     */
@@ -85,8 +85,10 @@ var Kmdata            = require('./models/kmdata.js');
     });
 
     app.get('/kmdata', (req, res) =>{
+      Kmdata.find({}, (err, Kmdata) =>{
+        res.send(Kmdata)
+      })
       //console.log(req.body) //Logs the incoming request to the console
-      res.send(kmdata)
     })
 };
 
