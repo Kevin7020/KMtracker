@@ -1,6 +1,6 @@
 // app/routes.js
 module.exports = function(app, passport) {
-
+var Kmdata            = require('./models/kmdata.js');
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
@@ -65,6 +65,29 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
+
+    /*
+    *var kmdata = [ //OLD array to store messages
+    *  { Kmetros: "1", litros: "2", precioT: "3", precioL: "4", fecha: "04/27/2018 10:43 PM" }
+    *]
+    */
+
+    app.post('/kmdata', (req, res) =>{
+      var kmdata = new Kmdata(req.body)
+
+      kmdata.save((err) => {
+        if (err)
+        sendStatus(500)
+
+        //kmdata.push(req.body)
+        res.sendStatus(200)
+      })
+    });
+
+    app.get('/kmdata', (req, res) =>{
+      //console.log(req.body) //Logs the incoming request to the console
+      res.send(kmdata)
+    })
 };
 
 // route middleware to make sure a user is logged in

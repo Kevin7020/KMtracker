@@ -28,7 +28,7 @@
     <br>
     <!-- Form  -->
     <div class="form-row text-center card card-body">
-      <form action="/kmdata" method="post">
+      <!--<form action="/kmdata" method="post">-->
         <br>
         <div class="row">
           <div class="col">
@@ -38,9 +38,9 @@
           </div>
 
           <div class="col">
-            <input id="precio" class="form-control" placeholder="Costo Total">
+            <input id="precioT" class="form-control" placeholder="Costo Total">
             <br>
-            <input id="precioxlitro" class="form-control" placeholder="Precio por Litro">
+            <input id="precioL" class="form-control" placeholder="Precio por Litro">
             <br>
             <div class="form-group">
               <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
@@ -61,7 +61,7 @@
 
         </div>
         <button id="enviar" class="btn btn-success">Enviar!</button>
-        </form>
+        <!--</form>-->
       </div>
     </div>
     <!-- END Form  -->
@@ -95,5 +95,36 @@
     </div>
 
   </div>
+  <script>
+
+  $(() => {
+    $("#enviar").click(() => {
+      var kmdata =
+      {
+        Kmetros: $("#Kmetros").val(),
+        litros: $("#litros").val(),
+        precioT: $("#precioT").val(),
+        precioL: $("#precioL").val(),
+        fecha: $("#fecha").val()
+      }
+      postkmdata(kmdata);
+      console.log(kmdata);
+    })
+    //getMessages()
+  })
+
+  function addMessage(message){
+    $("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
+  }
+
+  function getMessages() {//GET MESSAGES
+    $.get('http://192.168.0.11:8000/messages', (data) => {
+      data.forEach(addMessage);
+    })
+  }
+  function postkmdata(kmdata) {//POST MESSAGES
+    $.post('http://192.168.0.11:8000/kmdata', kmdata)
+  }
+</script>
 </body>
 </html>
