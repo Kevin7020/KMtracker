@@ -2,7 +2,8 @@
 <!doctype html>
 <html>
 <head>
-  <title>Node Authentication</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fuel and Km Tracker</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/css/tempusdominus-bootstrap-4.min.css" crossorigin="anonymous">
@@ -11,6 +12,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/js/tempusdominus-bootstrap-4.min.js" crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <style>
   body        { padding-top:80px; word-wrap:break-word; }
   </style>
@@ -29,74 +31,76 @@
     <!-- Form  -->
     <div class="form-row text-center card card-body">
       <!--<form action="/kmdata" method="post">-->
-        <br>
-        <div class="row">
-          <div class="col">
-            <input id="Kmetros" class="form-control" placeholder="Kilometraje">
-            <br>
-            <input id="litros" class="form-control" placeholder="Litros">
-          </div>
+      <br>
+      <div class="row">
+        <div class="col">
+          <input id="Kmetros" class="form-control" placeholder="Kilometraje">
+          <br>
+          <input id="litros" class="form-control" placeholder="Litros">
+        </div>
 
-          <div class="col">
-            <input id="precioT" class="form-control" placeholder="Costo Total">
-            <br>
-            <input id="precioL" class="form-control" placeholder="Precio por Litro">
-            <br>
-            <div class="form-group">
-              <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                <input id="fecha" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
-                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                  <div class="input-group-text"><i class="fa fa-calendar"></i>
-                  </div>
+        <div class="col">
+          <input id="precioT" class="form-control" placeholder="Costo Total">
+          <br>
+          <input id="precioL" class="form-control" placeholder="Precio por Litro">
+          <br>
+          <div class="form-group">
+            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+              <input id="fecha" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+              <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                <div class="input-group-text"><i class="fa fa-calendar"></i>
                 </div>
               </div>
             </div>
           </div>
-          <script type="text/javascript">
-          $(function () {
-            $('#datetimepicker1').datetimepicker();
-          });
-          </script>
-          <br>
-
         </div>
-        <button id="enviar" class="btn btn-success">Enviar!</button>
-        <!--</form>-->
+        <script type="text/javascript">
+        $(function () {
+          $('#datetimepicker1').datetimepicker();
+        });
+        </script>
+        <br>
+
       </div>
+      <button id="enviar" class="btn btn-success">Enviar!</button>
+      <!--</form>-->
     </div>
-    <!-- END Form  -->
-    <br>
+  </div>
+  <!-- END Form  -->
+  <br>
 
+  <div class="container card card-body">
+
+    <!-- LOCAL County -->
     <div class="row">
-
-      <!-- LOCAL County -->
       <div class="col">
+
         <div class="card card-body bg-light">
           <h3><span class="fa fa-bus"></span> County</h3>
+          <div id="kmdatalog">
 
-          <p>
-            DATA
-          </p>
-
+          </div>
         </div>
-      </div>
+        <!-- END LOCAL County -->
 
-      <!-- LOCAL H1 -->
-      <div class="col">
+        <br>
+
+        <!-- LOCAL H1 -->
         <div class="card card-body bg-light">
           <h3><span class="fa fa-bus"></span> User H1</h3>
-
           <p>
             DATA
           </p>
-
         </div>
+        <!-- END LOCAL H1 -->
+
       </div>
     </div>
 
   </div>
-  <script>
 
+  <script>
+  var socket = io()
   $(() => {
     $("#enviar").click(() => {
       var kmdata =
@@ -108,21 +112,30 @@
         fecha: $("#fecha").val()
       }
       postkmdata(kmdata);
-      console.log(kmdata);
+      //console.log(kmdata);
     })
-    //getMessages()
+    getkmdata()
   })
 
-  function addMessage(message){
-    $("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
+  socket.on('kmdata', addkmdata)
+
+  function addkmdata(kmdata){
+    $("#kmdatalog").append
+    (
+      `<h4> ${kmdata.fecha} </h4>
+      <p> ${kmdata.Kmetros} </p>
+      <p> ${kmdata.litros} </p>
+      <p> ${kmdata.precioT} </p>
+      <p> ${kmdata.precioL} </p>`
+    )
   }
 
-  function getMessages() {//GET MESSAGES
-    $.get('http://192.168.0.11:8000/messages', (data) => {
-      data.forEach(addMessage);
+  function getkmdata() {//GET KMDATA
+    $.get('http://192.168.0.11:8000/kmdata', (data) => {
+      data.forEach(addkmdata);
     })
   }
-  function postkmdata(kmdata) {//POST MESSAGES
+  function postkmdata(kmdata) {//POST KMDATA
     $.post('http://192.168.0.11:8000/kmdata', kmdata)
   }
 </script>

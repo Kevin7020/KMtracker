@@ -1,6 +1,6 @@
 // app/routes.js
-module.exports = function(app, passport) {
 var Kmdata            = require('./models/kmdata.js');
+module.exports = function(app, passport, io) {
     // =====================================
     // HOME PAGE (with login links) ========
     // =====================================
@@ -80,6 +80,7 @@ var Kmdata            = require('./models/kmdata.js');
         sendStatus(500)
 
         //kmdata.push(req.body)
+        io.emit('kmdata', req.body)// Fresh data homie!
         res.sendStatus(200)
       })
     });
@@ -90,6 +91,11 @@ var Kmdata            = require('./models/kmdata.js');
       })
       //console.log(req.body) //Logs the incoming request to the console
     })
+
+    io.on('connection',(socket) => {
+      console.log('Client connected') //Logs the incoming users to the console
+    })
+
 };
 
 // route middleware to make sure a user is logged in
