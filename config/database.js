@@ -1,7 +1,7 @@
 // config/database.js
 module.exports = {
 
-    'url' : 'mongodb://kevin:123456-_@ds117509.mlab.com:17509/learingnode'
+    'url' : 'mongodb://USER:PASSWORD@SERVER:PORT/DATABASE'
     //looks like mongodb://<user>:<pass>@mongo.onmodulus.net:27017/Mikha4ot
 
 };
